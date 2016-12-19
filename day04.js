@@ -34,13 +34,38 @@ Day04.prototype.computeLetterCounts = function (input) {
             if (!this.letterCounts.hasOwnProperty(element)) {
                 Object.defineProperty(this.letterCounts, element, { value: 1, writable: true });
             } else {
-                // currentLetterCount = this.letterCounts.valueOf(element);
                 currentLetterCount = this.letterCounts[element];
                 Object.defineProperty(this.letterCounts, element, { value: currentLetterCount + 1, writable: true });
             }
         }
     };
-    //    return Object.create(this.lettercounts._proto_,);
+};
+
+Day04.prototype.mostCommonLetter = function () {
+    var highestSoFar = 0;
+    var mostCommon = '';
+    for (var key in this.letterCounts) {
+        console.log(key.toString());
+        if (this.letterCounts.hasOwnProperty(key)) {
+            if(key.value > highestSoFar) {
+                highestSoFar = key.value;
+                mostCommon = key;
+            }
+        }
+    }
+    return mostCommon;
+};
+
+Day04.prototype.lettersInOrder = function () {
+    var orderedList = [];
+    for (var key in this.letterCounts) {
+        if (this.letterCounts.hasOwnProperty(key)) {
+            orderedList[key.value].push(key);
+            //var letterCount = this.letterCounts[key];
+
+            }
+            }
+    return orderedList;
 };
 
 Day04.prototype.isRealRoom = function (input) {
@@ -65,6 +90,6 @@ var input = 'aaaaa-bbb-z-y-x';
 var day04 = new Day04(input);
 // console.log(day04.getLetterCounts(input)['a']);
 console.log(day04.letterCounts['a']);
-
+console.log('MostCommonLetter' + day04.mostCommonLetter());
 
 //console.log('Sum of the Sector IDs of the real rooms: ' + day04.sectorIDSum);
