@@ -2,10 +2,6 @@
   "name": "adventofcode2016",
   "version": "1.0.0",
   "description": "Package containing solutions to Advent of Code 2016 challenges.",
-  // "main": "index.js",
-  // "scripts": {
-  //   "test": "echo \"Error: no test specified\" && exit 1"
-  // },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/geekycrooner/AdventOfCode2016.git"

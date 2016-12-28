@@ -3,15 +3,18 @@ var fs = require('fs');
 // var Day04 = function () {
 var Day04 = function (input) {
     this.letterCounts = {};
+    this.letterCountArray = [];
     if (input) {
         this.computeLetterCounts(input);
+        this.countLetters(input);
     };
+    this.letters = [];
 };
 
-Day04.prototype.Day04 = function (input) {
-    this.letterCounts = {};
-    this.computeLetterCounts(input);
-}
+// Day04.prototype.Day04 = function (input) {
+//     this.letterCounts = {};
+//     this.computeLetterCounts(input);
+// }
 
 Day04.prototype.getEncryptedName = function (input) {
     return input.substring(0, input.lastIndexOf('-'));
@@ -41,20 +44,84 @@ Day04.prototype.computeLetterCounts = function (input) {
     };
 };
 
-Day04.prototype.mostCommonLetter = function () {
-    var highestSoFar = 0;
-    var mostCommon = '';
-    for (var key in this.letterCounts) {
-        console.log(key.toString());
-        if (this.letterCounts.hasOwnProperty(key)) {
-            if(key.value > highestSoFar) {
-                highestSoFar = key.value;
-                mostCommon = key;
-            }
-        }
-    }
-    return mostCommon;
+Day04.prototype.countLetters = function (input) {
+  //var letterCountArray = [];
+
+  // zero out the array
+  for (var letterIndex = 0; letterIndex < 26; letterIndex++){
+    //letterCountArray.push(0);
+    this.letterCountArray.push(0);
+  };
+ 
+  // add 1 to each index "matched" by the input letters
+  for (var index = 0; index < input.length; index++) {
+    var element = input[index];
+    this.letterCountArray[element.charCodeAt() - 97]++;
+  }; 
+
+  // // 
+  // for (var index = 0; index < input.length; index++) {
+  //   var element = input[index];
+  //   letterCountArray[element.charCodeAt() - 97]++;
+  // this.letterCountArray = letterCountArray;
+  // }; 
+
 };
+
+Day04.prototype.mostCommonLetter = function () {
+    var highestCountSoFar = 0;
+    var highestLetterSoFar = 0;
+
+    for (var index = 0; index < this.letterCounts.length; index++) {
+      var element = this.letterCounts[index];
+      if (element >= highestCountSoFar) {
+        highestLetterSoFar = index;
+        highestCountSoFar = element;
+      }
+    };
+
+  return String.fromCharCode(highestLetterSoFar + 97);
+};
+
+Day04.prototype.totalArray = function(arr){
+  var total = 0;
+  for (var index = 0; index < arr.length; index++) {
+    total += arr[index];
+  }
+  return total;
+}
+
+Day04.prototype.nthCommonLetter = function(n) {
+  return this.computeChecksum()[n];
+};
+
+Day04.prototype.computeChecksum = function () {
+    var highestCountSoFar = -1;
+    var highestLetterSoFar = -1;
+    var letterCounts = this.letterCountArray.slice();
+    var lettersInOrder = '';
+
+    var totalLetters = this.totalArray(letterCounts);
+    
+    while (totalLetters > 0) {
+      for (var index = 0; index < letterCounts.length; index++) {
+        var element = letterCounts[index];
+        if (element > 0 && element > highestCountSoFar) {
+          highestLetterSoFar = index;
+          highestCountSoFar = element;
+          letterCounts[index] = 0;
+          lettersInOrder += String.fromCharCode(highestLetterSoFar + 97);
+        }
+      };
+      
+      highestCountSoFar = 0;
+      highestLetterSoFar = 0;
+      totalLetters = this.totalArray(letterCounts);
+
+    };
+  return lettersInOrder.slice(0,5);
+};
+
 
 Day04.prototype.lettersInOrder = function () {
     var orderedList = [];
@@ -85,11 +152,14 @@ module.exports = Day04;
 // add input string onto Input array
 // Input = input.split(', ');
 
-var input = 'aaaaa-bbb-z-y-x';
+//var input = 'aaaaa-bbb-z-y-x';
+var input = 'not-a-real-room';
 // var day04 = new Day04();
 var day04 = new Day04(input);
 // console.log(day04.getLetterCounts(input)['a']);
 console.log(day04.letterCounts['a']);
-console.log('MostCommonLetter' + day04.mostCommonLetter());
+// console.log('Most Common Letter: ' + day04.mostCommonLetter());
+console.log('Most Common Letter: ' + day04.nthCommonLetter(0));
+console.log('Second common letter: ' + day04.nthCommonLetter(1));
 
 //console.log('Sum of the Sector IDs of the real rooms: ' + day04.sectorIDSum);

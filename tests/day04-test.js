@@ -58,5 +58,30 @@ describe('Day04', function () {
         expect(day04.mostCommonLetter()).to.equal('a');
     });
 
+    it('Input: aaaaa-bbb-z-y-x; second most common letter is "b"', function () {
+        var input = 'aaaaa-bbb-z-y-x';
+        var day04 = new Day04(input);
+        expect(day04.nthCommonLetter(1)).to.equal('b');
+    });
+ 
+    it('Input: aaaaa-bbb-z-y-x; computed checksum is abxyz', function () {
+        var input = 'aaaaa-bbb-z-y-x';
+        var day04 = new Day04(input);
+        expect(day04.computeChecksum()).to.equal('abxyz');
+    });
+ 
+    it('Input: a-b-c-d-e-f-g-h; computed checksum is abcde', function () {
+        var input = 'a-b-c-d-e-f-g-h';
+        var day04 = new Day04(input);
+        expect(day04.computeChecksum()).to.equal('abcde');
+    });
+ 
+    it('Input: not-a-real-room; computed checksum is oarel', function () {
+        var input = 'not-a-real-room';
+        var day04 = new Day04(input);
+        expect(day04.computeChecksum()).to.equal('oarel');
+    });
+ 
+
 });
 
