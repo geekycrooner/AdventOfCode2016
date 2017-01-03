@@ -105,6 +105,12 @@ describe('Day04', function () {
         expect(day04.computeSumOfRealSectorIDs()).to.equal(1514);
     });
  
+    it('Input: qzmt-zixmtkozy-ivhz-343; decrypted name is \'very encrypted name\'', function () {
+        var input = ['qzmt-zixmtkozy-ivhz-343[zimth]'];
+        var day04 = new Day04.Day04(input);
+        expect(day04.roomList[0].decryptName()).to.equal('very encrypted name');
+    });
+    
 
 });
 
