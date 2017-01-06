@@ -36,11 +36,14 @@ describe('AoC', function () {
 
   it('After processing instructions, output bins contain 5,2,3', function () {
     day10.processBotInstructions();
-
-    expect(day10.getOutPutBins()).to.equal('5,2,3');
+    expect(day10.getOutputBinsAsString()).to.equal('5,2,3');
   });
   
+  it('After processing instructions, bot 2 was responsible for comparing 5 and 2', function () {
+    expect(day10.getBotIDThatCompared(5,2)).to.equal(2);
+  });
 
-
-
+  it('After processing instructions, multiplying output bins 0, 1, & 2 is 30', function () {
+    expect(day10.multiplyOutputs([0,1,2])).to.equal(30);
+  });
 });
