@@ -140,23 +140,6 @@ AOC.Day10.prototype.multiplyOutputs = function (outputBinIdArray) {
 
 module.exports = AOC;
 
-  //var day10 = new AOC.Day10();
- // var instructions = [
-  //   'value 5 goes to bot 2'
-  //   , 'bot 2 gives low to bot 1 and high to bot 0'
-  //   , 'value 3 goes to bot 1'
-  //   , 'bot 1 gives low to output 1 and high to bot 0'
-  //   , 'bot 0 gives low to output 2 and high to output 0'
-  //   , 'value 2 goes to bot 2'
-  // ];
-
-  // day10.readInstructionsFromInputArray(instructions);
-  // day10.processInputInstructions();
-  // day10.processBotInstructions();
-  // console.log(day10.getOutputBinsAsString());
-
-
-
 // get input file as a string
 var rawInput = fs.readFileSync('.\\Day10Input.txt', { encoding: 'utf8' });
 var inputArray = rawInput.split('\r\n');
