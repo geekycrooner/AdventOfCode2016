@@ -9,12 +9,13 @@ AOC.Day11 = function () {
   this.goalState;
   this.FloorOrdinals = ['', 'first', 'second', 'third', 'fourth'];
   this.statesList = [];
+  this.previousStates = [];
   this.successStates = [];
 };
 
 AOC.Day11.prototype.getMinimumStepsToGoal = function () {
   this.generatePossibleStates();
-  var minSteps;
+  var minSteps = Number.MAX_SAFE_INTEGER;
   this.successStates.forEach(function (element) {
     if (element.count < minSteps) minSteps = element.count;
   }, this);
@@ -88,54 +89,96 @@ AOC.Day11.prototype.isValidState = function (state) {
   return true;
 };
 
+AOC.Day11.prototype.wasVisited = function (stateString) {
+  if (this.previousStates.indexOf(stateString) < 0)
+    return false;
+  else
+    return true;
+};
+
 AOC.Day11.prototype.generatePossibleStates = function () {
   // var stepCount;
   while (this.statesList.length > 0) {
     var currentState = this.statesList.pop();
-    // if not the goal state....
-    if (currentState.displayState() !== this.goalState.displayState()) {
-      // is the state valid?
-      if (this.isValidState(currentState)) {
-        // find the elevator's floor in the state and get possibleEs
-        var elevatorLocation = currentState.map.get('E');
-        var possibleNextFloors;
-        if (elevatorLocation === 1) possibleNextFloors = [2];
-        if (elevatorLocation === 2) possibleNextFloors = [1, 3];
-        if (elevatorLocation === 3) possibleNextFloors = [2, 4];
-        if (elevatorLocation === 4) possibleNextFloors = [3];
-        // for each possible floor, generate maps
-        possibleNextFloors.forEach(function (newFloor) {
-          var tempMap = new Map();
-          // for each item in the stateMap that are equal to state.e, make a new state after changing that item to equal possibleE and add to statesList
-          for (var [key, value] of currentState.map.entries()) {
-            tempMap.set(key, (value === elevatorLocation) ? newFloor : value);
+    // if currentState has already been visited... continue
+    // if (!this.wasVisited(currentState.displayState())) {
+    //   this.previousStates.push(currentState.displayState());
+      // if not the goal state....
+      if (currentState.displayState() !== this.goalState.displayState()) {
+        // is the state valid?
+        if (this.isValidState(currentState) && !this.wasVisited(currentState.displayState())) {
+          this.previousStates.push(currentState.displayState());
+          // find the elevator's floor in the state and get possibleEs
+          var elevatorLocation = currentState.map.get('E');
+          var possibleNextFloors;
+          if (elevatorLocation === 1) possibleNextFloors = [2];
+          if (elevatorLocation === 2) possibleNextFloors = [1, 3];
+          if (elevatorLocation === 3) possibleNextFloors = [2, 4];
+          if (elevatorLocation === 4) possibleNextFloors = [3];
+
+          // put items that are on the same floor as the elevator in an array
+          var itemsOnElevatorFloor = [];
+          currentState.map.forEach(function (val, key, arr) {
+            if (val === elevatorLocation) itemsOnElevatorFloor.push(key);
+          });
+
+          // for each possible floor, generate maps
+          possibleNextFloors.forEach(function (newFloor) {
+            for (var index = 0; index < itemsOnElevatorFloor.length; index++) {
+              var element = itemsOnElevatorFloor[index];
+              if (element !== 'E') {
+                var tempMap = new Map();
+                // for each item in the stateMap that are equal to state.e, make a new state after changing that item to equal possibleE and add to statesList
+                for (var [key, value] of currentState.map.entries()) {
+                  if (key === element || key === 'E')
+                    tempMap.set(key, newFloor);
+                  else
+                    tempMap.set(key, value);
+                }
+                this.statesList.push(new AOC.State(currentState.count + 1, tempMap));
+
+              }
+
+            }
+          }, this);
+
+          // for all combinations of two items in the stateMap that are equal to state.e, make a new state after changing both to equal possibleE and add to statesList
+
+          // double-loop over it to make combinations
+          var combinations = [];
+          for (var firstItemIndex = 0; firstItemIndex < itemsOnElevatorFloor.length; firstItemIndex++) {
+            for (var secondItemIndex = 0; secondItemIndex < itemsOnElevatorFloor.length; secondItemIndex++) {
+              var firstElement = itemsOnElevatorFloor[firstItemIndex];
+              var secondElement = itemsOnElevatorFloor[secondItemIndex];
+              if (firstElement !== 'E' && secondElement !== 'E' && firstElement !== secondElement) {
+                if (combinations.indexOf(firstElement + secondElement) < 0 && combinations.indexOf(secondElement + firstElement) < 0) {
+                  combinations.push(firstElement + secondElement);
+                }
+              }
+            }
           }
-          this.statesList.push(new AOC.State(currentState.count + 1, tempMap));
-        }, this);
-        // for all combinations of two items in the stateMap that are equal to state.e, make a new state after changing both to equal possibleE and add to statesList
 
-        // // maybe use this? from https://codereview.stackexchange.com/questions/7001/generating-all-combinations-of-an-array
-        // function combinations(str) {
-        //     var fn = function(active, rest, a) {
-        //         if (!active && !rest)
-        //             return;
-        //         if (!rest) {
-        //             a.push(active);
-        //         } else {
-        //             fn(active + rest[0], rest.slice(1), a);
-        //             fn(active, rest.slice(1), a);
-        //         }
-        //         return a;
-        //     }
-        //     return fn("", str, []);
-        // }
+          // add a state to statesList for each of these on each possible floor, generate maps
+          possibleNextFloors.forEach(function (newFloor) {
+            // for each item in the list of combinations, make a new state after changing the items to equal possibleE and add to statesList
+            for (var index = 0; index < combinations.length; index++) {
+              var tempMap = new Map();
+              var element = combinations[index];
+              for (var [key, value] of currentState.map.entries()) {
+                if (key === 'E' || key === element.substr(0, 2) || key === element.substr(2, 2))
+                  tempMap.set(key, newFloor);
+                else
+                  tempMap.set(key, value);
+              }
+              this.statesList.push(new AOC.State(currentState.count + 1, tempMap));
+            }
+          }, this);
 
-        //get the permutations of items that are on element floor...
-
+        }
+      } else {
+        this.successStates.push(currentState);
       }
-    } else {
-      this.successStates.push(currentState);
-    }
+    // }
   }
 }
 
