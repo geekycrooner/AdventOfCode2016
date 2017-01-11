@@ -12,7 +12,7 @@ describe('AoC', function () {
     10
   ];
 
-  var day13 = new AoC.Day13();
+  var day13 = new AoC.Day13(1,1);
   day13.processInput(input);
 
   it('Location 0,0 is open', function () {
@@ -35,6 +35,12 @@ describe('AoC', function () {
     expect(day13.getLocation(9,6)).to.equal('#');
   });
 
+  it('Given the favoriteNumber = 10, the shortest path to 1,1 is 0 steps', function () {
+    var day13 = new AoC.Day13(1,1);
+    day13.favoriteNumber = 10;
+    expect(day13.computeShortestPath(1,1)).to.equal(0);
+  });
+
 /* 
 ideas...
 have a paths array
@@ -43,7 +49,7 @@ if those locations are the goal location, add that location to the path and stop
 if not, calculate open/wall for each of the four locations
 add a new path to the paths array starting with each of the open locations
 for each path, calculate next steps
-would a tree structure be better than this? then, the height of the tree is the optimal path...
+would a tree structure be better than this? then, the shortest path to the goal is the optimal path...
 also, need to handle back-tracking...i.e. stop if you're backtracking...
  */
 
