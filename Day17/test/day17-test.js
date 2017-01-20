@@ -79,4 +79,141 @@ describe('AOC', function () {
     expect(day17.getDoorStates('hijklD')).to.equal('f2bc');
   });
 
+  it('At the start, the only potential next path is hijklD', function () {
+    day17.calculatePotentialPaths(0, 0, 'hijkl');
+    expect(day17.getPotentialPaths()).to.equal('hijklD');
+  });
+
+  it('From the initial state and then taking the only open door, the only potential next path is hijklDU,hijklDR', function () {
+    var day17 = new AOC.Day17(passcode);
+    day17.curX = 0;
+    day17.curY = 0;
+    day17.calculatePotentialPaths(day17.curX, day17.curY, day17.passcode);
+
+    var pc = day17.potentialPaths.pop();
+    // var dir = pc.slice(-1);
+    // if (dir === 'U') day17.curY -= 1;
+    // else if (dir === 'D') day17.curY += 1;
+    // else if (dir === 'L') day17.curX -= 1;
+    // else if (dir === 'R') day17.curX += 1;
+    // day17.calculatePotentialPaths(day17.curX, day17.curY, pc);
+    day17.calculatePotentialPaths(pc.x, pc.y, pc.passcode);
+
+    expect(day17.getPotentialPaths()).to.equal('hijklDU,hijklDR');
+  });
+
+  it('After the previous step and taking the Right door, the only potential next path is hijklDU', function () {
+    var day17 = new AOC.Day17(passcode);
+    day17.curX = 0;
+    day17.curY = 0;
+    day17.calculatePotentialPaths(day17.curX, day17.curY, day17.passcode);
+
+    for (var i = 0; i < 2; i++) {
+      var pc = day17.potentialPaths.pop();
+      day17.calculatePotentialPaths(pc.x, pc.y, pc.passcode);
+    }
+
+    expect(day17.getPotentialPaths()).to.equal('hijklDU');
+  });
+
+  it('After the previous step and taking the Up door, the only potential next path is hijklDUR', function () {
+    var day17 = new AOC.Day17(passcode);
+    day17.curX = 0;
+    day17.curY = 0;
+    day17.calculatePotentialPaths(day17.curX, day17.curY, day17.passcode);
+
+    for (var i = 0; i < 3; i++) {
+      var pc = day17.potentialPaths.pop();
+      day17.calculatePotentialPaths(pc.x, pc.y, pc.passcode);
+    }
+
+    expect(day17.getPotentialPaths()).to.equal('hijklDUR');
+  });
+
+
+  it('After the previous step and taking the Right door, the only potential next path is \'\'', function () {
+    var day17 = new AOC.Day17(passcode);
+    day17.curX = 0;
+    day17.curY = 0;
+    day17.calculatePotentialPaths(day17.curX, day17.curY, day17.passcode);
+
+    for (var i = 0; i < 4; i++) {
+      var pc = day17.potentialPaths.pop();
+      day17.calculatePotentialPaths(pc.x, pc.y, pc.passcode);
+    }
+
+    expect(day17.getPotentialPaths()).to.equal('');
+  });
+
+  it('If your passcode were ihgpwlah, the shortest path would be DDRRRD.', function () {
+    var day17 = new AOC.Day17('ihgpwlah');
+    day17.calculatePotentialPaths(0, 0, day17.passcode);
+
+    var shortestPath;
+    while (day17.potentialPaths.length > 0) {
+      var pc = day17.potentialPaths.pop();
+      if (pc.x === 3 && pc.y === 3) {
+        day17.goodPaths.push(pc);
+        shortestPath = pc.passcode.substring(day17.passcode.length);
+        break;
+      }
+      day17.calculatePotentialPaths(pc.x, pc.y, pc.passcode);
+    }
+
+     expect(shortestPath).to.equal('DDRRRD');
+  });
+
+  it('If your passcode were kglvqrro, the shortest path would be DDUDRLRRUDRD.', function () {
+    var day17 = new AOC.Day17('kglvqrro');
+    day17.calculatePotentialPaths(0, 0, day17.passcode);
+
+    var shortestPath;
+    while (day17.potentialPaths.length > 0) {
+      var pc = day17.potentialPaths.pop();
+      if (pc.x === 3 && pc.y === 3) {
+        day17.goodPaths.push(pc);
+        shortestPath = pc.passcode.substring(day17.passcode.length);
+        break;
+      }
+      day17.calculatePotentialPaths(pc.x, pc.y, pc.passcode);
+    }
+
+     expect(shortestPath).to.equal('DDUDRLRRUDRD');
+  });
+
+  it('If your passcode were kglvqrro, the shortest path would be DDUDRLRRUDRD.', function () {
+    var day17 = new AOC.Day17('kglvqrro');
+    day17.calculatePotentialPaths(0, 0, day17.passcode);
+
+    var shortestPath;
+    while (day17.potentialPaths.length > 0) {
+      var pc = day17.potentialPaths.pop();
+      if (pc.x === 3 && pc.y === 3) {
+        day17.goodPaths.push(pc);
+        shortestPath = pc.passcode.substring(day17.passcode.length);
+        break;
+      }
+      day17.calculatePotentialPaths(pc.x, pc.y, pc.passcode);
+    }
+
+     expect(shortestPath).to.equal('DDUDRLRRUDRD');
+  });
+
+  it('If your passcode were ulqzkmiv, the shortest path would be DRURDRUDDLLDLUURRDULRLDUUDDDRR.', function () {
+    var day17 = new AOC.Day17('ulqzkmiv');
+    day17.calculatePotentialPaths(0, 0, day17.passcode);
+
+    var shortestPath;
+    while (day17.potentialPaths.length > 0) {
+      var pc = day17.potentialPaths.pop();
+      if (pc.x === 3 && pc.y === 3) {
+        day17.goodPaths.push(pc);
+        shortestPath = pc.passcode.substring(day17.passcode.length);
+        break;
+      }
+      day17.calculatePotentialPaths(pc.x, pc.y, pc.passcode);
+    }
+
+     expect(shortestPath).to.equal('DRURDRUDDLLDLUURRDULRLDUUDDDRR');
+  });
 });
