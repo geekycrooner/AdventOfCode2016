@@ -25,47 +25,39 @@ describe('AoC', function () {
     expect(day19.getWinningElfPosition()).to.equal(3);
   });
 
-/* 
-  for rules change to work, this should change to work with the following function:
-  (myPosition + floor (numPositions/2)) % numPositions
-  id is separate from position and positions should be reassigned starting with lowest ID after every removal
-  so, at start:
+  it('After the rules change, Elf 1 is across the table from Elf 3', function () {
+    var day19 = new AoC.Day19();
+    day19.processInput(testInput);
+    expect(day19.getPositionOfElfAcrossTable(1)).to.equal(3);
+  });
 
-  ID | myPosition | position across table function 
-  ------------------------------------------------
-  1  |     0      | (0 + floor(5/2)) % 5 = 2
-  2  |     1      | (1 + floor(5/2)) % 5 = 3
-  3  |     2      | (2 + floor(5/2)) % 5 = 4
-  4  |     3      | (3 + floor(5/2)) % 5 = 0
-  5  |     4      | (4 + floor(5/2)) % 5 = 1 
+  it('After the rules change, Elf 2 is across the table from Elf 4', function () {
+    var day19 = new AoC.Day19();
+    day19.processInput(testInput);
+    expect(day19.getPositionOfElfAcrossTable(2)).to.equal(4);
+  });
 
-  and after 3 is removed...
+  it('After the rules change, Elf 3 is across the table from Elf 5', function () {
+    var day19 = new AoC.Day19();
+    day19.processInput(testInput);
+    expect(day19.getPositionOfElfAcrossTable(3)).to.equal(5);
+  });
 
-  ID | myPosition | position across table function 
-  ------------------------------------------------
-  1  |     0      | (0 + floor(4/2)) % 4 = 2
-  2  |     1      | (1 + floor(4/2)) % 4 = 3
-  4  |     2      | (2 + floor(4/2)) % 4 = 0
-  5  |     3      | (3 + floor(4/2)) % 4 = 1 
+  it('After the rules change, Elf 4 is across the table from Elf 1', function () {
+    var day19 = new AoC.Day19();
+    day19.processInput(testInput);
+    expect(day19.getPositionOfElfAcrossTable(4)).to.equal(1);
+  });
 
-  and after 5 is removed...
+  it('After the rules change, Elf 5 is across the table from Elf 2', function () {
+    var day19 = new AoC.Day19();
+    day19.processInput(testInput);
+    expect(day19.getPositionOfElfAcrossTable(5)).to.equal(2);
+  });
 
-  ID | myPosition | position across table function 
-  ------------------------------------------------
-  1  |     0      | (0 + floor(3/2)) % 3 = 1
-  2  |     1      | (1 + floor(3/2)) % 3 = 2
-  4  |     2      | (2 + floor(3/2)) % 3 = 0
-
-  and after 1 is removed...
-
-  ID | myPosition | position across table function 
-  ------------------------------------------------
-  2  |     0      | (0 + floor(2/2)) % 2 = 1
-  4  |     1      | (1 + floor(2/2)) % 2 = 0
-
-*/
-
-  it('After the rules change, Elf in position 2 has all the presents', function () {
+  it('After the rules change, at the end, Elf in position 2 has all the presents', function () {
+    var day19 = new AoC.Day19();
+    day19.processInput(testInput);
     expect(day19.getNewWinningElfPosition()).to.equal(2);
   });
 
