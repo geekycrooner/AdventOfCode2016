@@ -11,6 +11,7 @@ AOC.Day19 = function () {
 
 AOC.Elf = function (id) {
   this.id = id;
+  this.position = id; // initially all elves have their id and position equal
   this.presents = 1;
 };
 
@@ -85,6 +86,7 @@ AOC.Day19.prototype.getElfById = function (id) {
   this.elfCircle.forEach((val) => {
     if (val.id === id) elf = val;
   });
+  return elf;
 };
 
 AOC.Day19.prototype.getNewWinningElfPosition = function () {
@@ -97,7 +99,7 @@ AOC.Day19.prototype.getNewWinningElfPosition = function () {
     for (var elfId = 1; elfId <= maxElfId; elfId++) {
      // get the elf if it's still in the circle
       var elf = this.getElfById(elfId);
-      if (elf) {
+      if (elf.position !== 0) {
       // if the elf has presents...
         // var myPresents = this.getPresentsInPosition(elfPosition);
         var myPresents = elf.presents;
@@ -108,9 +110,10 @@ AOC.Day19.prototype.getNewWinningElfPosition = function () {
             winningElfPosition = elf.id;
             break;
           } else {
-            // elf take presents to left (could propagate)...
-            var nextElfPosition = this.getPositionOfElfAcrossTable(elf);
-            this.setPresentsInPosition(elfPosition, myPresents + this.getPresentsInPosition(nextElfPosition));
+            // get the elf across the table
+            var nextElfPosition = this.getPositionOfElfAcrossTable(elf.position);
+            // this.setPresentsInPosition(elfPosition, myPresents + this.getPresentsInPosition(nextElfPosition));
+            this.setPresentsInPosition(elf.id, myPresents + this.getPresentsInPosition(nextElfPosition));
             this.setPresentsInPosition(nextElfPosition, 0);
             this.elvesMoveIn();
           }
