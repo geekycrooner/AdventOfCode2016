@@ -15,6 +15,15 @@ AOC.Elf = function (id) {
   this.presents = 1;
 };
 
+AOC.Elf.prototype.steal = function (type) {
+  if (type === 'left') {
+    
+    var nextElfPosition = this.getPositionOfNextElfWithPresents(elfPosition);
+    this.setPresentsInPosition(elfPosition, myPresents + this.getPresentsInPosition(nextElfPosition));
+    this.setPresentsInPosition(nextElfPosition, 0);
+  }
+}
+
 AOC.Day19.prototype.processInput = function (input) {
   var elfCount = Number(input);
   var elf;
@@ -62,6 +71,7 @@ AOC.Day19.prototype.getWinningElfPosition = function () {
   // until one elf has all the presents...
   while (!elfWon) {
     for (var elfPosition = 1; elfPosition <= this.elfCircle.size; elfPosition++) {
+      var elf = this.elfCircle.get(elfPosition);
       // if the elf has presents...
       var myPresents = this.getPresentsInPosition(elfPosition);
       if (myPresents > 0) { // if I have presents, but not all presents...
@@ -71,9 +81,7 @@ AOC.Day19.prototype.getWinningElfPosition = function () {
           break;
         } else {
           // elf take presents to left (could propagate)...
-          var nextElfPosition = this.getPositionOfNextElfWithPresents(elfPosition);
-          this.setPresentsInPosition(elfPosition, myPresents + this.getPresentsInPosition(nextElfPosition));
-          this.setPresentsInPosition(nextElfPosition, 0);
+          elf.steal('left');
         }
       }
     }
@@ -97,10 +105,10 @@ AOC.Day19.prototype.getNewWinningElfPosition = function () {
   while (!elfWon) {
     // for (var elfPosition = 1; elfPosition <= this.elfCircle.size; elfPosition++) {
     for (var elfId = 1; elfId <= maxElfId; elfId++) {
-     // get the elf if it's still in the circle
+      // get the elf if it's still in the circle
       var elf = this.getElfById(elfId);
       if (elf.position !== 0) {
-      // if the elf has presents...
+        // if the elf has presents...
         // var myPresents = this.getPresentsInPosition(elfPosition);
         var myPresents = elf.presents;
         if (myPresents > 0) { // if I have presents, but not all presents...
